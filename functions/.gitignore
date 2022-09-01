@@ -1,0 +1,16 @@
+# Compiled JavaScript files
+lib/**/*.js
+lib/**/*.js.map
+
+# TypeScript v1 declaration files
+typings/
+
+# Node.js dependency directory
+node_modules/
+
+.DS_Store
+firebase-debug.log
+yarn-error.log
+skynet-83fb5-b72c8a580ebd.json
+workspace.code-workspace
+.env
