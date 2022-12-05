@@ -9,6 +9,16 @@ export const now = () => {
   return dayjs().tz("Asia/Tokyo");
 };
 
+export const days = {
+  Sun: 0,
+  Mon: 1,
+  Tue: 2,
+  Wed: 3,
+  Thu: 4,
+  Fri: 5,
+  Sat: 6,
+};
+
 export const dayOfWeek = () => {
   return dayjs().add(1, "day").day();
 };
@@ -22,15 +32,15 @@ export const yesterday = () => {
 };
 export const getNextMonday = (date: dayjs.Dayjs) => {
   switch (date.day()) {
-    case 0:
+    case days.Sun:
       return date.add(1, "day").startOf("d");
-    case 1:
+    case days.Mon:
       return date.add(1, "week").startOf("d");
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
+    case days.Tue:
+    case days.Wed:
+    case days.Thu:
+    case days.Fri:
+    case days.Sat:
       return date.add(1, "week").subtract(date.day() - 1).startOf("d");
     default:
       return date.startOf("d");
@@ -39,15 +49,15 @@ export const getNextMonday = (date: dayjs.Dayjs) => {
 
 export const getLastMonday = (date: dayjs.Dayjs) => {
   switch (date.day()) {
-    case 0:
+    case days.Sun:
       return date.subtract(6, "day").startOf("d");
-    case 1:
+    case days.Mon:
       return date.subtract(1, "week").startOf("d");
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
+    case days.Tue:
+    case days.Wed:
+    case days.Thu:
+    case days.Fri:
+    case days.Sat:
       return date.subtract(date.day() - 1, "day").startOf("d");
     default:
       return date.startOf("d");
