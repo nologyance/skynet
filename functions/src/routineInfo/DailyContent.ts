@@ -9,6 +9,14 @@ import { getWeatherReport } from "./weatherReport/WeatherReport";
 import { resolveWeatherReport }
   from "./weatherReport/WeatherReportFlexMessageMapper";
 
+export const getUpdatedEvent = async () => {
+  const events = await getEventsInNextMondayOnlyUpdatedFromYesterday();
+  if (events == null) {
+    return null;
+  }
+  return dailyEntryPoint(events);
+};
+
 export const dailyContent = async () => {
   return {
     type: bubble.prop,
@@ -21,14 +29,6 @@ export const dailyContent = async () => {
       ],
     },
   };
-};
-
-export const getUpdatedEvent = async () => {
-  const events = await getEventsInNextMondayOnlyUpdatedFromYesterday();
-  if (events == null) {
-    return;
-  }
-  return dailyEntryPoint(events);
 };
 
 const bubble = {
