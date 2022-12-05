@@ -1,5 +1,5 @@
 import * as functions from "firebase-functions";
-import { dayOfWeek } from "../common/DateUtils";
+import { dayOfWeek, days } from "../common/DateUtils";
 import { LineClient } from "../common/LineClient";
 import { dailyContent, getUpdatedEvent } from "./DailyContent";
 import { createWeeklyContent } from "./WeeklyContent";
@@ -14,15 +14,23 @@ export const routineInfo = functions
         `おはようございます。
         今日も人類を滅ぼすために頑張りましょう🤖`);
 
-      if (dayOfWeek() === 1) {
-        client.pushFlexMessage(await createWeeklyContent(), "今週の予定");
+      if (dayOfWeek() === days["Mon"]) {
+        pushEventOfThisWeekMessage(client);
       } else {
-        const updatedEvent = await getUpdatedEvent();
-        if (updatedEvent !== undefined) {
-          client.pushFlexMessage(updatedEvent, "予定の変更");
-        }
+        pushUpdatedEventOfThisWeekMessage(client);
       }
     } catch (e) {
       console.error(e);
     }
   });
+
+const pushEventOfThisWeekMessage = async (client: LineClient) => {
+  client.pushFlexMessage(await createWeeklyContent(), "今週の予定");
+};
+
+const pushUpdatedEventOfThisWeekMessage = async (client: LineClient) => {
+  const updatedEvent = await getUpdatedEvent();
+  if (updatedEvent !== null) {
+    client.pushFlexMessage(updatedEvent, "予定の変更");
+  }
+};
