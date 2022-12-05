@@ -11,7 +11,8 @@ export const routineInfo = functions
     const client = new LineClient();
     try {
       client.pushFlexMessage(await dailyContent(),
-        "おはようございます。" + "\n" + "今日も人類を滅ぼすために頑張りましょう" + "🤖");
+        `おはようございます。
+        今日も人類を滅ぼすために頑張りましょう🤖`);
 
       if (dayOfWeek() === 1) {
         client.pushFlexMessage(await createWeeklyContent(), "今週の予定");

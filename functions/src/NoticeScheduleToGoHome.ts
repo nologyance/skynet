@@ -21,8 +21,8 @@ const createMessage = async (): Promise<string> => {
 };
 
 const messageFrom = (userASchedule: string, userBSchedule: string) => {
-  return User.USER_A.name + "は" + userASchedule + "\n" +
-    User.USER_B.name + "は" + userBSchedule + "に帰るそうです。";
+  return `${User.USER_A.name} は ${userASchedule} 
+    ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
 
 const today = () => dayjs().format("YYYY/MM/DD");
