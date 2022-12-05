@@ -10,22 +10,22 @@ export const dailyEntryPoint = async (events: void | Event[]) => {
 
 export const entryPoint = async (events: void | Event[], title: string) => {
   return {
-    type: bubble.prop,
+    type: bubble,
     header: {
-      type: box.prop,
-      layout: baseline.prop,
+      type: box,
+      layout: baseline,
       contents: [
         {
-          type: text.prop,
+          type: text,
           text: title,
-          weight: bold.prop,
+          weight: bold,
           size: space.xl,
         },
       ],
     },
     body: {
-      type: box.prop,
-      layout: vertical.prop,
+      type: box,
+      layout: vertical,
       contents: [
         resolveEvent(events),
       ],
@@ -36,13 +36,13 @@ export const entryPoint = async (events: void | Event[], title: string) => {
 const resolveEvent = (events: void | Event[]) => {
   if (events === undefined || !events.length) {
     return {
-      type: text.prop,
+      type: text,
       text: "なし",
     };
   }
   return {
-    type: box.prop,
-    layout: vertical.prop,
+    type: box,
+    layout: vertical,
     spacing: space.lg,
     contents: [
       ...eventContents(events),
@@ -53,8 +53,8 @@ const resolveEvent = (events: void | Event[]) => {
 const eventContents = (events: Event[]) => {
   return events.map((event) => {
     return {
-      type: box.prop,
-      layout: vertical.prop,
+      type: box,
+      layout: vertical,
       spacing: space.sm,
       contents: [
         creatorAndTitle(event.creator, event.title),
@@ -66,8 +66,8 @@ const eventContents = (events: Event[]) => {
 
 const creatorAndTitle = (creator: string, title: string | null | undefined) => {
   return {
-    type: box.prop,
-    layout: baseline.prop,
+    type: box,
+    layout: baseline,
     spacing: space.sm,
     contents: [
       eventItem(creator + ": " + title),
@@ -78,8 +78,8 @@ const creatorAndTitle = (creator: string, title: string | null | undefined) => {
 const dateTime = (startTime: string | null | undefined,
   endTime: string | null | undefined) => {
   return {
-    type: box.prop,
-    layout: baseline.prop,
+    type: box,
+    layout: baseline,
     spacing: space.sm,
     contents: [
       eventItem(startTime + " ~ " + endTime),
@@ -89,38 +89,26 @@ const dateTime = (startTime: string | null | undefined,
 
 const eventItem = (str: string | null | undefined) => {
   return {
-    type: text.prop,
+    type: text,
     text: str ? str : "no content",
   };
 };
 
-const bubble = {
-  prop: "bubble" as const,
-};
+const bubble = "bubble" as const;
 
-const box = {
-  prop: "box" as const,
-};
+const box = "box" as const;
 
-const baseline = {
-  prop: "baseline" as const,
-};
+const baseline = "baseline" as const;
 
-const vertical = {
-  prop: "vertical" as const,
-};
+const vertical = "vertical" as const;
 
-const text = {
-  prop: "text" as const,
-};
+const text = "text" as const;
 
-const bold = {
-  prop: "bold" as const,
-};
+const bold = "bold" as const;
 
 const space = {
-  xl: "xl" as const,
-  sm: "sm" as const,
-  lg: "lg" as const,
-  xxl: "xxl" as const,
-};
+  xl: "xl",
+  sm: "sm",
+  lg: "lg",
+  xxl: "xxl",
+} as const;
