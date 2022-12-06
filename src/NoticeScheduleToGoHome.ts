@@ -1,4 +1,4 @@
-import dayjs = require("dayjs");
+import dayjs from "dayjs";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "./@types/Schedule";
 import { db } from "./common/Firestore";

@@ -9,7 +9,7 @@ import {
 // eslint-disable-next-line
 import { calendar_v3, google } from "googleapis";
 import { convertCreator } from "../../common/User";
-import dayjs = require("dayjs");
+import dayjs from "dayjs";
 
 export const getEventsInNextMondayOnlyUpdatedFromYesterday = () => {
   return getEventsInNextMonday(yesterday());
