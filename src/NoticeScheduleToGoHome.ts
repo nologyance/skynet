@@ -1,5 +1,5 @@
 import { Message, QuickReplyItem } from "@line/bot-sdk";
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "./@types/Schedule";
 import { db } from "./common/Firestore";

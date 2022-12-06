@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "../@types/Schedule";
 import { userIdOf } from "./User";
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import { firestore } from "firebase-admin";
 
 // eslint-disable-next-line import/namespace
