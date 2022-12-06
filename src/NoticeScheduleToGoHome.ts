@@ -1,3 +1,4 @@
+import { Message, QuickReplyItem } from "@line/bot-sdk";
 import dayjs from "dayjs";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "./@types/Schedule";
@@ -10,7 +11,8 @@ export const noticeScheduleToGoHome = functions
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
-    client.pushMessage(await createMessage());
+    client.pushMessageBoth(await createMessage());
+    client.pushReactiveMessage(noticeChangeMessage());
   });
 
 const createMessage = async (): Promise<string> => {
@@ -24,6 +26,36 @@ const messageFrom = (userASchedule: string, userBSchedule: string) => {
   return `${User.USER_A.name} は ${userASchedule} 
     ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
+
+const noticeChangeMessage = (): Message => {
+  return {
+    type: "text",
+    text: "予定を変更しますか？変更する場合は返信してください。",
+    quickReply: {
+      items: [
+        "19:00まで",
+        "19:30くらい",
+        "20:00くらい",
+        "20:30くらい",
+        "21:00くらい",
+        "21:30過ぎるくらい",
+      ].map((time) => quickReply(time)),
+    },
+  };
+};
+
+export const quickReply = (time: string): QuickReplyItem => {
+  return {
+    type: "action",
+    action: {
+      type: "postback",
+      label: time + "に",
+      data: `update_${time}`,
+      displayText: "「" + time + "に」で登録しました",
+    },
+  };
+};
+
 
 const today = () => dayjs().format("YYYY/MM/DD");
 

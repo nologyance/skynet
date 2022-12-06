@@ -13,10 +13,15 @@ export class LineClient {
       new line.Client(getConfig());
   }
 
-  public pushMessage(message: string) {
+  public pushMessageBoth(message: string) {
     this.client.multicast(this.to,
       { type: "text", text: message }
     );
+  }
+
+  public pushMessage( to: User, message: string) {
+    this.client.pushMessage(to.userId,
+      { type: "text", text: message });
   }
 
   public pushReactiveMessage(message: Message) {
