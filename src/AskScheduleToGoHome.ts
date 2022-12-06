@@ -10,7 +10,7 @@ export const askScheduleToGoHome = functions
     client.pushReactiveMessage(createMessage());
   });
 
-const createMessage = (): Message => {
+export const createMessage = (): Message => {
   return {
     type: "text",
     text: "今日の帰宅予定は？",
@@ -29,7 +29,7 @@ const createMessage = (): Message => {
   };
 };
 
-const quickReply = (time: string): QuickReplyItem => {
+export const quickReply = (time: string): QuickReplyItem => {
   return {
     type: "action",
     action: {
