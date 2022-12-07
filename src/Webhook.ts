@@ -1,4 +1,5 @@
 import * as line from "@line/bot-sdk";
+import { Message, QuickReplyItem } from "@line/bot-sdk";
 import * as functions from "firebase-functions";
 import { saveSchedule } from "./common/Firestore";
 import { getConfig, LineClient } from "./common/LineClient";
@@ -21,7 +22,7 @@ export const lineWebhook = functions
       .catch((error) => console.error(error));
   });
 
-const lineEventHandler = (event: line.WebhookEvent) => {
+const lineEventHandler = async (event: line.WebhookEvent) => {
   if (event.type !== "postback") {
     console.log("event type is not postback");
     return Promise.resolve(null);
@@ -33,14 +34,34 @@ const lineEventHandler = (event: line.WebhookEvent) => {
         saveSchedule(event.source.userId, time);
       } else if (event.postback.data.startsWith("update_")) {
         const time = event.postback.data.replace("update_", "");
+        if (time === "変更なし") {
+          return;
+        }
         // FIXME: DBも更新する
         // saveSchedule(event.source.userId, time);
         const client = new LineClient();
         if (userIdOf(event.source.userId) === User.USER_A) {
-          client.pushMessage(
+          await client.pushReactiveMessage(
+            User.USER_B,
+            noticeChangeMessage(`${User.USER_A.name}はやっぱり${time}に帰るそうです。`)
+          );
+        } else {
+          await client.pushReactiveMessage(
+            User.USER_A,
+            noticeChangeMessage(`${User.USER_B.name}はやっぱり${time}に帰るそうです。`)
+          );
+        }
+      } else if (event.postback.data.startsWith("completed_")) {
+        const time = event.postback.data.replace("completed_", "");
+        if (time === "変更なし") {
+          return;
+        }
+        const client = new LineClient();
+        if (userIdOf(event.source.userId) === User.USER_A) {
+          await client.pushMessage(
             User.USER_B, `${User.USER_A.name}はやっぱり${time}に帰るそうです。`);
         } else {
-          client.pushMessage(
+          await client.pushMessage(
             User.USER_A, `${User.USER_B.name}はやっぱり${time}に帰るそうです。`);
         }
       }
@@ -57,3 +78,35 @@ const lineEventHandler = (event: line.WebhookEvent) => {
     console.log("end");
   }
 };
+
+
+export const noticeChangeMessage = (preMessage: string): Message => {
+  return {
+    type: "text",
+    text: preMessage + "\n" + "予定を変更しますか？変更する場合は返信してください。",
+    quickReply: {
+      items: [
+        "変更なし",
+        "19:00まで",
+        "19:30くらい",
+        "20:00くらい",
+        "20:30くらい",
+        "21:00くらい",
+        "21:30過ぎるくらい",
+      ].map((time) => quickReply(time)),
+    },
+  };
+};
+
+export const quickReply = (time: string): QuickReplyItem => {
+  return {
+    type: "action",
+    action: {
+      type: "postback",
+      label: time === "変更なし" ? time : time + "に",
+      data: `completed_${time}`,
+      displayText: "「" + time + "」で登録しました",
+    },
+  };
+};
+

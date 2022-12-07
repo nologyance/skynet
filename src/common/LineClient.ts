@@ -13,23 +13,27 @@ export class LineClient {
       new line.Client(getConfig());
   }
 
-  public pushMessageBoth(message: string) {
-    this.client.multicast(this.to,
+  public async pushMessageBoth(message: string) {
+    await this.client.multicast(this.to,
       { type: "text", text: message }
     );
   }
 
-  public pushMessage( to: User, message: string) {
-    this.client.pushMessage(to.userId,
+  public async pushMessage(to: User, message: string) {
+    await this.client.pushMessage(to.userId,
       { type: "text", text: message });
   }
 
-  public pushReactiveMessage(message: Message) {
-    this.client.multicast(this.to, message);
+  public async pushReactiveMessageBoth(message: Message) {
+    await this.client.multicast(this.to, message);
   }
 
-  public pushFlexMessage(content: FlexBubble, altText: string) {
-    this.client.multicast(this.to, {
+  public async pushReactiveMessage(to: User, message: Message) {
+    await this.client.pushMessage(to.userId, message);
+  }
+
+  public async pushFlexMessage(content: FlexBubble, altText: string) {
+    await this.client.multicast(this.to, {
       type: "flex",
       altText: altText,
       contents: content,

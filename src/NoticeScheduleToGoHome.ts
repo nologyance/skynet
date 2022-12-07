@@ -11,8 +11,8 @@ export const noticeScheduleToGoHome = functions
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
-    client.pushMessageBoth(await createMessage());
-    client.pushReactiveMessage(noticeChangeMessage());
+    await client.pushReactiveMessageBoth(
+      noticeChangeMessage(await createMessage()));
   });
 
 const createMessage = async (): Promise<string> => {
@@ -24,13 +24,13 @@ const createMessage = async (): Promise<string> => {
 
 const messageFrom = (userASchedule: string, userBSchedule: string) => {
   return `${User.USER_A.name} は ${userASchedule} 
-    ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
+  ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
 
-const noticeChangeMessage = (): Message => {
+export const noticeChangeMessage = (preMessage: string): Message => {
   return {
     type: "text",
-    text: "予定を変更しますか？変更する場合は返信してください。",
+    text: preMessage + "\n" + "予定を変更しますか？変更する場合は返信してください。",
     quickReply: {
       items: [
         "19:00まで",
@@ -51,7 +51,7 @@ export const quickReply = (time: string): QuickReplyItem => {
       type: "postback",
       label: time + "に",
       data: `update_${time}`,
-      displayText: "「" + time + "に」で登録しました",
+      displayText: "「" + time + "」で登録しました",
     },
   };
 };

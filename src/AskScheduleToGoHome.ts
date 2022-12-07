@@ -1,13 +1,13 @@
+import { Message, QuickReplyItem } from "@line/bot-sdk";
 import * as functions from "firebase-functions";
 import { LineClient } from "./common/LineClient";
-import { Message, QuickReplyItem } from "@line/bot-sdk";
 
 export const askScheduleToGoHome = functions
   .region("asia-northeast1").pubsub.schedule("0 16 * * 1-5")
   .timeZone("Asia/Tokyo")
   .onRun(() => {
     const client = new LineClient();
-    client.pushReactiveMessage(createMessage());
+    client.pushReactiveMessageBoth(createMessage());
   });
 
 export const createMessage = (): Message => {
@@ -34,7 +34,7 @@ export const quickReply = (time: string): QuickReplyItem => {
       type: "postback",
       label: time + "に",
       data: `first_${time}`,
-      displayText: "「" + time + "に」で登録しました",
+      displayText: "「" + time + "」で登録しました",
     },
   };
 };
