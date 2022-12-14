@@ -1,5 +1,5 @@
 import { Message, QuickReplyItem } from "@line/bot-sdk";
-import dayjs from "dayjs";
+import * as dayjs from "dayjs";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "./@types/Schedule";
 import { db } from "./common/Firestore";
@@ -25,7 +25,7 @@ const createMessage = async (): Promise<string> => {
 
 const messageFrom = (userASchedule: string, userBSchedule: string) => {
   return `${User.USER_A.name} は ${userASchedule} 
-  ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
+${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
 
 export const createNoticeChangeMessageWithPreMessage =
