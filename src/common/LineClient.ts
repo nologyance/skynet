@@ -1,11 +1,10 @@
 import * as line from "@line/bot-sdk";
-import { FlexBubble, Message } from "@line/bot-sdk";
+import { Message } from "@line/bot-sdk";
 import * as functions from "firebase-functions";
 import { User } from "./User";
 
 export class LineClient {
   client: line.Client;
-  to: string[] = [User.USER_A.userId, User.USER_B.userId];
 
   constructor() {
     this.client = process.env.toString() === "test" ?
@@ -13,31 +12,12 @@ export class LineClient {
       new line.Client(getConfig());
   }
 
-  public async pushMessageBoth(message: string) {
-    await this.client.multicast(this.to,
-      { type: "text", text: message }
-    );
-  }
-
-  public async pushMessage(to: User, message: string) {
-    await this.client.pushMessage(to.userId,
-      { type: "text", text: message });
-  }
-
-  public async pushReactiveMessageBoth(message: Message) {
-    await this.client.multicast(this.to, message);
-  }
-
-  public async pushReactiveMessage(to: User, message: Message) {
-    await this.client.pushMessage(to.userId, message);
-  }
-
-  public async pushFlexMessage(content: FlexBubble, altText: string) {
-    await this.client.multicast(this.to, {
-      type: "flex",
-      altText: altText,
-      contents: content,
-    });
+  public async pushMessage(to: User[], message: Message) {
+    if (to.length === 1) {
+      await this.client.pushMessage(to[0].userId, message);
+    } else {
+      await this.client.multicast(to.map((t) => t.userId), message);
+    }
   }
 
   public static validateSignature(body: string | Buffer,

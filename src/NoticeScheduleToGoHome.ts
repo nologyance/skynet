@@ -1,5 +1,5 @@
 import { Message, QuickReplyItem } from "@line/bot-sdk";
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "./@types/Schedule";
 import { db } from "./common/Firestore";
@@ -11,8 +11,9 @@ export const noticeScheduleToGoHome = functions
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
-    await client.pushReactiveMessageBoth(
-      noticeChangeMessage(await createMessage()));
+    await client.pushMessage(
+      [User.USER_A, User.USER_B],
+      createNoticeChangeMessageWithPreMessage(await createMessage()));
   });
 
 const createMessage = async (): Promise<string> => {
@@ -27,10 +28,18 @@ const messageFrom = (userASchedule: string, userBSchedule: string) => {
   ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
 
-export const noticeChangeMessage = (preMessage: string): Message => {
+export const createNoticeChangeMessageWithPreMessage =
+  (preMessage: string): Message => {
+    return createNoticeChangeMessage(preMessage);
+  };
+
+export const createNoticeChangeMessage = (preMessage?: string): Message => {
+  const defaultMessage = "予定を変更しますか？変更する場合は返信してください。";
+  const displayMessage = preMessage ?
+    `${preMessage}\n${defaultMessage}` : defaultMessage;
   return {
     type: "text",
-    text: preMessage + "\n" + "予定を変更しますか？変更する場合は返信してください。",
+    text: displayMessage,
     quickReply: {
       items: [
         "19:00まで",
@@ -65,6 +74,7 @@ const getSchedule = async (user: string, date: string) => {
   docRef.forEach((doc) => {
     data = doc.data();
   });
+  // return data === undefined ? "(未登録)" : data.time;
   if (data === undefined) {
     return "(未登録)";
   }

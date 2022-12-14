@@ -41,13 +41,13 @@ const lineEventHandler = async (event: line.WebhookEvent) => {
         // saveSchedule(event.source.userId, time);
         const client = new LineClient();
         if (userIdOf(event.source.userId) === User.USER_A) {
-          await client.pushReactiveMessage(
-            User.USER_B,
+          await client.pushMessage(
+            [User.USER_B],
             noticeChangeMessage(`${User.USER_A.name}はやっぱり${time}に帰るそうです。`)
           );
         } else {
-          await client.pushReactiveMessage(
-            User.USER_A,
+          await client.pushMessage(
+            [User.USER_A],
             noticeChangeMessage(`${User.USER_B.name}はやっぱり${time}に帰るそうです。`)
           );
         }
@@ -58,11 +58,17 @@ const lineEventHandler = async (event: line.WebhookEvent) => {
         }
         const client = new LineClient();
         if (userIdOf(event.source.userId) === User.USER_A) {
+          const message = `${User.USER_A.name}はやっぱり${time}に帰るそうです。`;
           await client.pushMessage(
-            User.USER_B, `${User.USER_A.name}はやっぱり${time}に帰るそうです。`);
+            [User.USER_B],
+            { type: "text", text: message }
+          );
         } else {
+          const message = `${User.USER_B.name}はやっぱり${time}に帰るそうです。`;
           await client.pushMessage(
-            User.USER_A, `${User.USER_B.name}はやっぱり${time}に帰るそうです。`);
+            [User.USER_A],
+            { type: "text", text: message }
+          );
         }
       }
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

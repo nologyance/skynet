@@ -1,6 +1,7 @@
 import * as functions from "firebase-functions";
 import { dayOfWeek, days } from "../common/DateUtils";
 import { LineClient } from "../common/LineClient";
+import { User } from "../common/User";
 import { dailyContent, getUpdatedEvent } from "./DailyContent";
 import { createWeeklyContent } from "./WeeklyContent";
 
@@ -9,10 +10,18 @@ export const routineInfo = functions
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
+    const altText = `おはようございます。
+    今日も人類を滅ぼすために頑張りましょう🤖`;
+
     try {
-      client.pushFlexMessage(await dailyContent(),
-        `おはようございます。
-        今日も人類を滅ぼすために頑張りましょう🤖`);
+      client.pushMessage(
+        [User.USER_A, User.USER_B],
+        {
+          type: "flex",
+          altText: altText,
+          contents: await dailyContent(),
+        }
+      );
 
       if (dayOfWeek() === days["Mon"]) {
         pushEventOfThisWeekMessage(client);
@@ -25,12 +34,26 @@ export const routineInfo = functions
   });
 
 const pushEventOfThisWeekMessage = async (client: LineClient) => {
-  client.pushFlexMessage(await createWeeklyContent(), "今週の予定");
+  client.pushMessage(
+    [User.USER_A, User.USER_B],
+    {
+      type: "flex",
+      altText: "今週の予定",
+      contents: await createWeeklyContent(),
+    }
+  );
 };
 
 const pushUpdatedEventOfThisWeekMessage = async (client: LineClient) => {
   const updatedEvent = await getUpdatedEvent();
   if (updatedEvent !== null) {
-    client.pushFlexMessage(updatedEvent, "予定の変更");
+    client.pushMessage(
+      [User.USER_A, User.USER_B],
+      {
+        type: "flex",
+        altText: "予定の変更",
+        contents: updatedEvent,
+      },
+    );
   }
 };
