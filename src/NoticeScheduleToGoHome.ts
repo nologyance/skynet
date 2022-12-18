@@ -5,6 +5,7 @@ import { UserSchedule } from "./@types/Schedule";
 import { db } from "./common/Firestore";
 import { LineClient } from "./common/LineClient";
 import { User } from "./common/User";
+import { scheduleToGoHomeCandidate } from "./ScheduleToGoHomeCandidate";
 
 export const noticeScheduleToGoHome = functions
   .region("asia-northeast1").pubsub.schedule("0 18 * * 1-5")
@@ -38,14 +39,7 @@ export const createNoticeChangeMessage = (preMessage?: string): Message => {
     type: "text",
     text: displayMessage,
     quickReply: {
-      items: [
-        "19:00まで",
-        "19:30くらい",
-        "20:00くらい",
-        "20:30くらい",
-        "21:00くらい",
-        "21:30過ぎるくらい",
-      ].map((time) => quickReply(time)),
+      items: scheduleToGoHomeCandidate.map((time) => quickReply(time)),
     },
   };
 };
@@ -55,9 +49,9 @@ export const quickReply = (time: string): QuickReplyItem => {
     type: "action",
     action: {
       type: "postback",
-      label: time + "に",
+      label: `${time}に`,
       data: `update_${time}`,
-      displayText: "「" + time + "」で登録しました",
+      displayText: `「${time}」で登録しました`,
     },
   };
 };

@@ -1,4 +1,5 @@
-import { createMessage, quickReply } from "../src/AskScheduleToGoHome";
+import { createMessage } from "../src/AskScheduleToGoHome";
+import { toQuickReplyItem } from "../src/common/MessageFactory";
 
 it("createMessage", () => {
   expect(createMessage())
@@ -13,7 +14,11 @@ it("createMessage", () => {
           "20:30くらい",
           "21:00くらい",
           "21:30過ぎるくらい",
-        ].map((time) => quickReply(time)),
+        ].map((time) => toQuickReplyItem({
+          label: `${time}に`,
+          data: `first_${time}`,
+          displayText: `「${time}」で登録しました`,
+        })),
       },
     });
 });

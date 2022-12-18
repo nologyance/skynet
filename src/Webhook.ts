@@ -1,9 +1,11 @@
 import * as line from "@line/bot-sdk";
-import { Message, QuickReplyItem } from "@line/bot-sdk";
+import { Message } from "@line/bot-sdk";
 import * as functions from "firebase-functions";
 import { saveSchedule } from "./common/Firestore";
 import { getConfig, LineClient } from "./common/LineClient";
+import { toQuickReplyItem } from "./common/MessageFactory";
 import { User, userIdOf } from "./common/User";
+import { scheduleToGoHomeCandidate } from "./ScheduleToGoHomeCandidate";
 
 export const lineWebhook = functions
   .region("asia-northeast1")
@@ -87,32 +89,25 @@ const lineEventHandler = async (event: line.WebhookEvent) => {
 
 
 export const noticeChangeMessage = (preMessage: string): Message => {
+  const NO_CHANGE = "変更なし";
+  const noChangeItem = toQuickReplyItem({
+    label: NO_CHANGE,
+    data: `completed_${NO_CHANGE}`,
+    displayText: `「${NO_CHANGE}」で登録しました`,
+  });
+
+  const candidateItem = scheduleToGoHomeCandidate
+    .map((candidate) => toQuickReplyItem({
+      label: `${candidate}に`,
+      data: `completed_${candidate}`,
+      displayText: `「${candidate}」で登録しました`,
+    }));
+
   return {
     type: "text",
     text: preMessage + "\n" + "予定を変更しますか？変更する場合は返信してください。",
     quickReply: {
-      items: [
-        "変更なし",
-        "19:00まで",
-        "19:30くらい",
-        "20:00くらい",
-        "20:30くらい",
-        "21:00くらい",
-        "21:30過ぎるくらい",
-      ].map((time) => quickReply(time)),
+      items: [noChangeItem, ...candidateItem],
     },
   };
 };
-
-export const quickReply = (time: string): QuickReplyItem => {
-  return {
-    type: "action",
-    action: {
-      type: "postback",
-      label: time === "変更なし" ? time : time + "に",
-      data: `completed_${time}`,
-      displayText: "「" + time + "」で登録しました",
-    },
-  };
-};
-

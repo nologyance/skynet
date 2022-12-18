@@ -4,13 +4,13 @@ import { createNoticeChangeMessageWithPreMessage }
 it("createNoticeChangeMessage", () => {
   const replyItem = (time: string) => {
     return {
+      type: "action",
       action: {
         type: "postback",
         label: `${time}に`,
         data: `update_${time}`,
         displayText: `「${time}」で登録しました`,
       },
-      type: "action",
     };
   };
   const createMessageMock = jest.fn(
