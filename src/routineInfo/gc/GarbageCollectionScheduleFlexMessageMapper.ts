@@ -1,3 +1,8 @@
+/**
+ * ごみ収集のスケジュールをFlexMessageに変換する
+ * @param {string} schedule ごみ収集のスケジュール
+ * @return {FlexMessage} ごみ収集のスケジュール
+ */
 export const resolveGCSchedule = (schedule: string) => {
   return [
     {
