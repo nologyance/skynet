@@ -10,30 +10,35 @@ export const routineInfo = functions
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
-    const altText = `おはようございます。
-    今日も人類を滅ぼすために頑張りましょう🤖`;
 
     try {
-      client.pushMessage(
-        [User.USER_A, User.USER_B],
-        {
-          type: "flex",
-          altText: altText,
-          contents: await dailyContent(),
-        }
-      );
+      pushDailyMessage(client);
 
       if (dayOfWeek() === days["Mon"]) {
-        pushEventOfThisWeekMessage(client);
+        pushEventMessageForThisWeek(client);
       } else {
-        pushUpdatedEventOfThisWeekMessage(client);
+        pushUpdatedEventMessageForThisWeek(client);
       }
     } catch (e) {
       console.error(e);
     }
   });
 
-const pushEventOfThisWeekMessage = async (client: LineClient) => {
+const pushDailyMessage = async (client: LineClient) => {
+  const altText = `おはようございます。
+  今日も人類を滅ぼすために頑張りましょう🤖`;
+
+  client.pushMessage(
+    [User.USER_A, User.USER_B],
+    {
+      type: "flex",
+      altText: altText,
+      contents: await dailyContent(),
+    }
+  );
+};
+
+const pushEventMessageForThisWeek = async (client: LineClient) => {
   client.pushMessage(
     [User.USER_A, User.USER_B],
     {
@@ -44,7 +49,7 @@ const pushEventOfThisWeekMessage = async (client: LineClient) => {
   );
 };
 
-const pushUpdatedEventOfThisWeekMessage = async (client: LineClient) => {
+const pushUpdatedEventMessageForThisWeek = async (client: LineClient) => {
   const updatedEvent = await getUpdatedEvent();
   if (updatedEvent !== null) {
     client.pushMessage(
