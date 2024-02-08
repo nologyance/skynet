@@ -1,6 +1,6 @@
 import * as line from "@line/bot-sdk";
 import * as functions from "firebase-functions";
-import { getConfig, LineClient } from "./common/LineClient";
+import { getConfig, LineClient } from "../common/LineClient";
 import {
   handleEvent,
 } from "./PostBackEventHandler";

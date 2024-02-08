@@ -1,10 +1,10 @@
 import * as line from "@line/bot-sdk";
 import { Message } from "@line/bot-sdk";
-import { saveSchedule } from "./common/Firestore";
-import { LineClient } from "./common/LineClient";
-import { toQuickReplyItem } from "./common/MessageFactory";
-import { User, userIdOf } from "./common/User";
-import { scheduleToGoHomeCandidate } from "./ScheduleToGoHomeCandidate";
+import { scheduleToGoHomeCandidate } from "../ScheduleToGoHomeCandidate";
+import { saveSchedule } from "../common/Firestore";
+import { LineClient } from "../common/LineClient";
+import { toQuickReplyItem } from "../common/MessageFactory";
+import { User, userIdOf } from "../common/User";
 
 export const handleEvent = (event: line.PostbackEvent) => {
   if (event.postback.data.startsWith("first_")) {
