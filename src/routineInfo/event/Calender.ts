@@ -18,15 +18,15 @@ export const getEventsInNextMondayOnlyHavingDiff = () => {
 
 export const getEventsInNextMonday =
   async (updatedMin?: dayjs.Dayjs) => {
-    const res = await getResponse(updatedMin ?? now(), updatedMin);
-    const events = res?.data.items;
+    const { data } = await getEvents(updatedMin ?? now(), updatedMin);
+    const events = data.items;
     if (!events?.length) {
       return console.log("No event found.");
     }
-    return mapResponse(events);
+    return toResponse(events);
   };
 
-const getResponse = (
+const getEvents = (
   timeMin: dayjs.Dayjs, updatedMin?: dayjs.Dayjs) => {
   return calendar.events.list(
     Object.assign({}, {
@@ -53,7 +53,7 @@ const auth = process.env.NODE_ENV?.toString() === "test" ?
 const calendar = google.calendar({ version: "v3", auth: auth });
 
 // eslint-disable-next-line
-const mapResponse = (events: calendar_v3.Schema$Event[]) => {
+const toResponse = (events: calendar_v3.Schema$Event[]) => {
   return events.map((event) => {
     return {
       creator: convertCreator(event.creator?.email),
