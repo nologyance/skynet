@@ -1,4 +1,6 @@
 import { Event } from "../../@types/Calender";
+import { BASELINE, BOLD, BOX, BUBBLE, SPACE, TEXT, VERTICAL }
+  from "../../common/FlexMessage";
 
 export const weeklyEntryPoint = async (events: void | Event[]) => {
   return entryPoint(events, "今週の予定");
@@ -10,7 +12,7 @@ export const dailyEntryPoint = async (events: void | Event[]) => {
 
 export const entryPoint = async (events: void | Event[], title: string) => {
   return {
-    type: bubble,
+    type: BUBBLE,
     header: header(title),
     body: body(events),
   };
@@ -18,14 +20,14 @@ export const entryPoint = async (events: void | Event[], title: string) => {
 
 const header = (title: string) => {
   return {
-    type: box,
-    layout: baseline,
+    type: BOX,
+    layout: BASELINE,
     contents: [
       {
-        type: text,
+        type: TEXT,
         text: title,
-        weight: bold,
-        size: space.xl,
+        weight: BOLD,
+        size: SPACE.xl,
       },
     ],
   };
@@ -33,8 +35,8 @@ const header = (title: string) => {
 
 const body = (events: void | Event[]) => {
   return {
-    type: box,
-    layout: vertical,
+    type: BOX,
+    layout: VERTICAL,
     contents: [
       resolveEvent(events),
     ],
@@ -44,14 +46,14 @@ const body = (events: void | Event[]) => {
 const resolveEvent = (events: void | Event[]) => {
   if (events === undefined || !events.length) {
     return {
-      type: text,
+      type: TEXT,
       text: "なし",
     };
   }
   return {
-    type: box,
-    layout: vertical,
-    spacing: space.lg,
+    type: BOX,
+    layout: VERTICAL,
+    spacing: SPACE.lg,
     contents: [
       ...eventContents(events),
     ],
@@ -61,9 +63,9 @@ const resolveEvent = (events: void | Event[]) => {
 const eventContents = (events: Event[]) => {
   return events.map((event) => {
     return {
-      type: box,
-      layout: vertical,
-      spacing: space.sm,
+      type: BOX,
+      layout: VERTICAL,
+      spacing: SPACE.sm,
       contents: [
         creatorAndTitle(event.creator, event.title),
         dateTime(event.startTime, event.endTime),
@@ -74,9 +76,9 @@ const eventContents = (events: Event[]) => {
 
 const creatorAndTitle = (creator: string, title: string | null | undefined) => {
   return {
-    type: box,
-    layout: baseline,
-    spacing: space.sm,
+    type: BOX,
+    layout: BASELINE,
+    spacing: SPACE.sm,
     contents: [
       eventItem(creator + ": " + title),
     ],
@@ -86,9 +88,9 @@ const creatorAndTitle = (creator: string, title: string | null | undefined) => {
 const dateTime = (startTime: string | null | undefined,
   endTime: string | null | undefined) => {
   return {
-    type: box,
-    layout: baseline,
-    spacing: space.sm,
+    type: BOX,
+    layout: BASELINE,
+    spacing: SPACE.sm,
     contents: [
       eventItem(startTime + " ~ " + endTime),
     ],
@@ -97,26 +99,7 @@ const dateTime = (startTime: string | null | undefined,
 
 const eventItem = (str: string | null | undefined) => {
   return {
-    type: text,
+    type: TEXT,
     text: str ? str : "no content",
   };
 };
-
-const bubble = "bubble" as const;
-
-const box = "box" as const;
-
-const baseline = "baseline" as const;
-
-const vertical = "vertical" as const;
-
-const text = "text" as const;
-
-const bold = "bold" as const;
-
-const space = {
-  xl: "xl",
-  sm: "sm",
-  lg: "lg",
-  xxl: "xxl",
-} as const;

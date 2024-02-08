@@ -1,3 +1,5 @@
+import { TEXT, BOLD, BOX, BASELINE, SPACE } from "../../common/FlexMessage";
+
 /**
  * ごみ収集のスケジュールをFlexMessageに変換する
  * @param {string} schedule ごみ収集のスケジュール
@@ -8,13 +10,13 @@ export const resolveGCSchedule = (schedule: string) => {
     {
       type: TEXT,
       text: "今日のゴミ収集",
-      size: space.xl,
+      size: SPACE.xl,
       weight: BOLD,
     },
     {
       type: BOX,
       layout: BASELINE,
-      spacing: space.sm,
+      spacing: SPACE.sm,
       contents: [
         {
           type: TEXT,
@@ -24,18 +26,3 @@ export const resolveGCSchedule = (schedule: string) => {
     },
   ];
 };
-
-const BOX = "box" as const;
-
-const BASELINE = "baseline" as const;
-
-const TEXT = "text" as const;
-
-const BOLD = "bold" as const;
-
-const space = {
-  xl: "xl",
-  sm: "sm",
-  lg: "lg",
-  xxl: "xxl",
-} as const;

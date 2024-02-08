@@ -1,3 +1,4 @@
+import { BOX, BUBBLE, VERTICAL } from "../common/FlexMessage";
 import { getEventsInNextMondayOnlyHavingDiff } from "./event/Calender";
 import { dailyEntryPoint } from "./event/EventMessageMapper";
 import { resolveGCSchedule } from "./gc/GCScheduleMessageMapper";
@@ -13,25 +14,13 @@ export const getUpdatedEvent = async () => {
 
 export const dailyContent = async () => {
   return {
-    type: bubble.prop,
+    type: BUBBLE,
     body: {
-      type: box.prop,
-      layout: vertical.prop,
+      type: BOX,
+      layout: VERTICAL,
       contents: [
         ...resolveGCSchedule(getGCScheduleNow()),
       ],
     },
   };
-};
-
-const bubble = {
-  prop: "bubble" as const,
-};
-
-const box = {
-  prop: "box" as const,
-};
-
-const vertical = {
-  prop: "vertical" as const,
 };
