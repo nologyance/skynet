@@ -25,13 +25,13 @@ export const resolveGCSchedule = (schedule: string) => {
   ];
 };
 
-const BOX = "box";
+const BOX = "box" as const;
 
-const BASELINE = "baseline";
+const BASELINE = "baseline" as const;
 
-const TEXT = "text";
+const TEXT = "text" as const;
 
-const BOLD = "bold";
+const BOLD = "bold" as const;
 
 const space = {
   xl: "xl",
