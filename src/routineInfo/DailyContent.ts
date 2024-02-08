@@ -2,9 +2,6 @@ import { getEventsInNextMondayOnlyHavingDiff } from "./event/Calender";
 import { dailyEntryPoint } from "./event/EventMessageMapper";
 import { resolveGCSchedule } from "./gc/GCScheduleMessageMapper";
 import { getGCScheduleNow } from "./gc/GetGCSchedule";
-import { getWeatherReport } from "./weatherReport/WeatherReport";
-import { resolveWeatherReport } from
-  "./weatherReport/WeatherReportMessageMapper";
 
 export const getUpdatedEvent = async () => {
   const events = await getEventsInNextMondayOnlyHavingDiff();
@@ -22,7 +19,6 @@ export const dailyContent = async () => {
       layout: vertical.prop,
       contents: [
         ...resolveGCSchedule(getGCScheduleNow()),
-        ...resolveWeatherReport(await getWeatherReport()),
       ],
     },
   };
