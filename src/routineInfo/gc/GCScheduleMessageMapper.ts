@@ -6,18 +6,18 @@
 export const resolveGCSchedule = (schedule: string) => {
   return [
     {
-      type: text.prop,
+      type: TEXT,
       text: "今日のゴミ収集",
       size: space.xl,
-      weight: bold.prop,
+      weight: BOLD,
     },
     {
-      type: box.prop,
-      layout: baseline.prop,
+      type: BOX,
+      layout: BASELINE,
       spacing: space.sm,
       contents: [
         {
-          type: text.prop,
+          type: TEXT,
           text: schedule,
         },
       ],
@@ -25,25 +25,17 @@ export const resolveGCSchedule = (schedule: string) => {
   ];
 };
 
-const box = {
-  prop: "box" as const,
-};
+const BOX = "box";
 
-const baseline = {
-  prop: "baseline" as const,
-};
+const BASELINE = "baseline";
 
-const text = {
-  prop: "text" as const,
-};
+const TEXT = "text";
 
-const bold = {
-  prop: "bold" as const,
-};
+const BOLD = "bold";
 
 const space = {
-  xl: "xl" as const,
-  sm: "sm" as const,
-  lg: "lg" as const,
-  xxl: "xxl" as const,
-};
+  xl: "xl",
+  sm: "sm",
+  lg: "lg",
+  xxl: "xxl",
+} as const;
