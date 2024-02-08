@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import { getGCSchedule }
-  from "../../src/routineInfo/gc/GetGarbageCollectionSchedule";
+  from "../../src/routineInfo/gc/GetGCSchedule";
 
 it("getGarbageCollectionSchedule", () => {
   expect(getGCSchedule(dayjs("2021-10-17 7:00:00")))

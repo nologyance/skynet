@@ -1,9 +1,9 @@
-import * as dayjs from "dayjs";
-import * as timezone from "dayjs/plugin/timezone";
-import * as utc from "dayjs/plugin/utc";
+import dayjs, { extend } from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+import utc from "dayjs/plugin/utc";
 
-dayjs.extend(timezone);
-dayjs.extend(utc);
+extend(timezone);
+extend(utc);
 
 export const now = () => {
   return dayjs().tz("Asia/Tokyo");

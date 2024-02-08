@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import { days, now } from "../../common/DateUtils";
 
 export const getGCScheduleNow = () => {
