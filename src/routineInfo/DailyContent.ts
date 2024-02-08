@@ -1,16 +1,13 @@
-import { getEventsInNextMondayOnlyUpdatedFromYesterday }
-  from "./event/Calender";
-import { dailyEntryPoint } from "./event/EventFlexMessageMapper";
-import { resolveGCSchedule } from
-  "./gc/GarbageCollectionScheduleFlexMessageMapper";
-import { getGarbageCollectionSchedule as getGCSchedule }
-  from "./gc/GetGarbageCollectionSchedule";
+import { getEventsInNextMondayOnlyHavingDiff } from "./event/Calender";
+import { dailyEntryPoint } from "./event/EventMessageMapper";
+import { resolveGCSchedule } from "./gc/GCScheduleMessageMapper";
+import { getGCScheduleNow } from "./gc/GetGCSchedule";
 import { getWeatherReport } from "./weatherReport/WeatherReport";
-import { resolveWeatherReport }
-  from "./weatherReport/WeatherReportFlexMessageMapper";
+import { resolveWeatherReport } from
+  "./weatherReport/WeatherReportMessageMapper";
 
 export const getUpdatedEvent = async () => {
-  const events = await getEventsInNextMondayOnlyUpdatedFromYesterday();
+  const events = await getEventsInNextMondayOnlyHavingDiff();
   if (events == null) {
     return null;
   }
@@ -24,7 +21,7 @@ export const dailyContent = async () => {
       type: box.prop,
       layout: vertical.prop,
       contents: [
-        ...resolveGCSchedule(getGCSchedule()),
+        ...resolveGCSchedule(getGCScheduleNow()),
         ...resolveWeatherReport(await getWeatherReport()),
       ],
     },

@@ -11,25 +11,33 @@ export const dailyEntryPoint = async (events: void | Event[]) => {
 export const entryPoint = async (events: void | Event[], title: string) => {
   return {
     type: bubble,
-    header: {
-      type: box,
-      layout: baseline,
-      contents: [
-        {
-          type: text,
-          text: title,
-          weight: bold,
-          size: space.xl,
-        },
-      ],
-    },
-    body: {
-      type: box,
-      layout: vertical,
-      contents: [
-        resolveEvent(events),
-      ],
-    },
+    header: header(title),
+    body: body(events),
+  };
+};
+
+const header = (title: string) => {
+  return {
+    type: box,
+    layout: baseline,
+    contents: [
+      {
+        type: text,
+        text: title,
+        weight: bold,
+        size: space.xl,
+      },
+    ],
+  };
+};
+
+const body = (events: void | Event[]) => {
+  return {
+    type: box,
+    layout: vertical,
+    contents: [
+      resolveEvent(events),
+    ],
   };
 };
 

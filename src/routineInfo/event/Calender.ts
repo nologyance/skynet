@@ -1,17 +1,18 @@
 import {
-  now,
   formatDate,
   formatDateTime,
   formatEndDate,
   getNextMonday,
+  now,
   yesterday,
 } from "../../common/DateUtils";
 // eslint-disable-next-line
+import * as dayjs from "dayjs";
+// eslint-disable-next-line camelcase
 import { calendar_v3, google } from "googleapis";
 import { convertCreator } from "../../common/User";
-import * as dayjs from "dayjs";
 
-export const getEventsInNextMondayOnlyUpdatedFromYesterday = () => {
+export const getEventsInNextMondayOnlyHavingDiff = () => {
   return getEventsInNextMonday(yesterday());
 };
 

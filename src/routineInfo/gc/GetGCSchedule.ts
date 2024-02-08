@@ -1,7 +1,7 @@
 import * as dayjs from "dayjs";
 import { now } from "../../common/DateUtils";
 
-export const getGarbageCollectionSchedule = () => {
+export const getGCScheduleNow = () => {
   return getGCSchedule(now());
 };
 
