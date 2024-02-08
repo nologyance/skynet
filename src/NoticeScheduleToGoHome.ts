@@ -14,7 +14,7 @@ export const noticeScheduleToGoHome = functions
     const client = new LineClient();
     await client.pushMessage(
       [User.USER_A, User.USER_B],
-      createNoticeChangeMessageWithPreMessage(
+      createNoticeChangeMessage(
         await createScheduleToGoHomeMessage()
       ));
   });
@@ -22,19 +22,16 @@ export const noticeScheduleToGoHome = functions
 const createScheduleToGoHomeMessage = async (): Promise<string> => {
   const userASchedule = await getSchedule(User.USER_A, today());
   const userBSchedule = await getSchedule(User.USER_B, today());
+
   return `${User.USER_A.name} は ${userASchedule} 
   ${User.USER_B.name} は ${userBSchedule} に帰るそうです。`;
 };
-
-export const createNoticeChangeMessageWithPreMessage =
-  (preMessage: string): Message => {
-    return createNoticeChangeMessage(preMessage);
-  };
 
 export const createNoticeChangeMessage = (preMessage?: string): Message => {
   const defaultMessage = "予定を変更しますか？変更する場合は返信してください。";
   const displayMessage = preMessage ?
     `${preMessage}\n${defaultMessage}` : defaultMessage;
+
   return {
     type: "text",
     text: displayMessage,
@@ -60,7 +57,7 @@ const today = () => dayjs().format("YYYY/MM/DD");
 
 const getSchedule = async (user: User, date: string) => {
   const docRef = await db.schedule(date, user.enName).get();
-  let data!: UserSchedule;
+  let data!: Partial<UserSchedule>;
   docRef.forEach((doc) => {
     data = doc.data();
   });

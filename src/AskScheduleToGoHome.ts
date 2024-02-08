@@ -9,8 +9,7 @@ export const askScheduleToGoHome = functions
   .region("asia-northeast1").pubsub.schedule("0 16 * * 1-5")
   .timeZone("Asia/Tokyo")
   .onRun(() => {
-    const client = new LineClient();
-    client.pushMessage([User.USER_A, User.USER_B], createMessage());
+    new LineClient().pushMessage([User.USER_A, User.USER_B], createMessage());
   });
 
 export const createMessage = (): Message => {
