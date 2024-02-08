@@ -1,10 +1,9 @@
 import * as dayjs from "dayjs";
-import { now } from "../../common/DateUtils";
+import { days, now } from "../../common/DateUtils";
 
 export const getGCScheduleNow = () => {
   return getGCSchedule(now());
 };
-
 
 /**
  * Returns the garbage collection schedule based on the given date.
@@ -17,12 +16,12 @@ export const getGCScheduleNow = () => {
  */
 export const getGCSchedule = (date: dayjs.Dayjs) => {
   switch (dayjs(date).day()) {
-    case 1:
-    case 4:
+    case days.Mon:
+    case days.Thu:
       return "普通ゴミ";
-    case 2:
+    case days.Tue:
       return "容器包装プラスチック";
-    case 5:
+    case days.Fri:
       return "資源ゴミ";
     default:
       return "なし";
