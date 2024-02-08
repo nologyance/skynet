@@ -1,4 +1,4 @@
-import { createNoticeChangeMessageWithPreMessage }
+import { createNoticeChangeMessage }
   from "../src/NoticeScheduleToGoHome";
 
 it("createNoticeChangeMessage", () => {
@@ -15,7 +15,7 @@ it("createNoticeChangeMessage", () => {
   };
   const createMessageMock = jest.fn(
     () => "ユーザーA は 19:00までに\nユーザーB は 20:00くらいに帰るそうです。");
-  expect(createNoticeChangeMessageWithPreMessage(createMessageMock()))
+  expect(createNoticeChangeMessage(createMessageMock()))
     .toStrictEqual({
       quickReply: {
         items: [
