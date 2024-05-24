@@ -1,9 +1,11 @@
+import dayjs from "dayjs";
 import * as admin from "firebase-admin";
+import { firestore } from "firebase-admin";
 import * as functions from "firebase-functions";
 import { UserSchedule } from "../@types/Schedule";
 import { userIdOf } from "./User";
-import dayjs from "dayjs";
-import { firestore } from "firebase-admin";
+// eslint-disable-next-line import/no-unresolved
+import { DocumentData, FirestoreDataConverter } from "firebase-admin/firestore";
 
 // eslint-disable-next-line import/namespace
 admin.initializeApp(
@@ -18,7 +20,9 @@ const converter = <T>() => ({
 });
 
 const dataPoint = <T>(collectionPath: string) =>
-  firestore().collection(collectionPath).withConverter(converter<T>());
+  firestore()
+    .collection(collectionPath)
+    .withConverter(converter<T>() as FirestoreDataConverter<T, DocumentData>);
 
 // Construct a database helper object
 export const db = {
