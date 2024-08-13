@@ -8,7 +8,7 @@ import { User } from "./common/User";
 import { scheduleToGoHomeCandidate } from "./ScheduleToGoHomeCandidate";
 
 export const noticeScheduleToGoHome = functions
-  .region("asia-northeast1").pubsub.schedule("0 18 * * 1-5")
+  .region("asia-northeast1").pubsub.schedule("0 17 * * 1-5")
   .timeZone("Asia/Tokyo")
   .onRun(async () => {
     const client = new LineClient();
